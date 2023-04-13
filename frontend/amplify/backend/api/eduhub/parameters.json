@@ -1,0 +1,12 @@
+{
+  "AppSyncApiName": "eduhub",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "autheduhub72f31404",
+      "Outputs.UserPoolId"
+    ]
+  },
+  "AuthModeLastUpdated": "2022-12-05T03:45:01.385Z"
+}

@@ -1,0 +1,50 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY {
+  globalAuthRule: AuthRule = { allow: public }
+} # FOR TESTING ONLY!
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  profilePictureUri: String
+}
+
+type Group {
+  id: ID!
+  name: String!
+  description: String,
+  users: [User]!,
+  createdDateTime: String!
+}
+
+type Message {
+  id: ID!
+  groupId: Int!
+  message: String!
+  user: User!
+  createdDateTime: String!
+}
+
+type Query {
+  getUserInfo: User
+  listGroups(userId: Int): [Group]
+  listMessages(groupId: Int!): [Message] 
+  listUsers(search: String): [User]
+  listUsersInGroup(groupId: Int): [User]
+  @aws_cognito_user_pools
+}
+
+type Mutation {
+  createUser(email: String!, firstName: String!, lastName: String!): User
+  createGroup(name: String!, description: String, userIds: String): Group
+  createMessage(groupId: Int!, message: String!): Message
+  @aws_cognito_user_pools
+}
+
+type Subscription {
+  onNewMessage(groupId: Int!): Message
+    @aws_subscribe(mutations: ["createMessage"])
+  @aws_cognito_user_pools
+}
